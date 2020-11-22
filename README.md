@@ -1,4 +1,4 @@
-# web-scraper
+# job-scraper
 
 To practice python and web scraping
 
