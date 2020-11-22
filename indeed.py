@@ -24,16 +24,20 @@ def get_last_page(url):
 def extract_job(html):
     title = html.find("h2", {"class": "title"}).a["title"]
 
-    company = html.find("span", {"class": "company"})
+    companyElement = html.find("span", {"class": "company"})
 
-    if company.a is not None:
-        company = company.a.string
+    if companyElement.a is not None:
+        company = companyElement.a.string
     else:
-        company = company.string
+        company = companyElement.string
 
     company = company.strip()
 
-    location = html.find("span", {"class": "location"}).string
+    locationElement = html.find("span", {"class": "location"})
+    if locationElement is None:
+        locationElement = html.find("div", {"class": "location"})
+    location = locationElement.string
+
     # location = html.find("div", {"class": "recJobLoc"})["data-rc-loc"]
 
     job_id = html["data-jk"]
@@ -64,5 +68,5 @@ def get_jobs(keyword):
     url = f"https://kr.indeed.com/jobs?q={keyword}&limit={limit}&filter=0"
     last_page = get_last_page(url)
     jobs = extract_jobs(url, last_page)
-    
+
     return jobs
