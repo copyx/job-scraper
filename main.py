@@ -7,9 +7,11 @@ from flask import Flask, render_template, request, redirect, send_file
 db = {}
 app = Flask("Scraper")
 
+
 @app.route("/")
 def home():
-    return render_template("search.html") 
+    return render_template("search.html")
+
 
 @app.route("/report")
 def report():
@@ -28,9 +30,10 @@ def report():
         db[word] = jobs
 
         return render_template("report.html",
-            searchingBy=word,
-            resultCount=len(jobs),
-            jobs=jobs)
+                               searchingBy=word,
+                               resultCount=len(jobs),
+                               jobs=jobs)
+
 
 @app.route("/export")
 def export():
@@ -43,12 +46,12 @@ def export():
 
         if not db.get(word):
             raise Exception()
-        
+
         save_to_file(db[word])
         return send_file("jobs.csv")
     except:
         return redirect("/")
 
 
-
-app.run(host="0.0.0.0")
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")
